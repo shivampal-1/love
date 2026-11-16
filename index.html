@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mauli's Love Diary ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Playfair+Display:ital,wght@0,600;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#800020;--rose:#C08081;--cream:#FFF8ED;--brown:#795548;--blush:#F3DDE0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;color:var(--cream);font-family:'Caveat','Segoe Script',cursive;font-size:20px;
+background:radial-gradient(circle at 50% 35%,#5c1a27,#2a0b12 80%)}
+h1,h3{font-family:'Playfair Display',Georgia,serif;font-weight:600;margin:.2em 0}
+button{font:inherit;cursor:pointer}
+#top{position:fixed;top:0;left:0;right:0;height:54px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 90px;color:var(--blush);z-index:6;font-size:18px}
+#stage{position:fixed;top:54px;bottom:88px;left:0;right:0;display:flex;align-items:center;justify-content:center;perspective:2400px;touch-action:none;z-index:2}
+#book{position:relative;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.5,.1,.3,1);transform:scale(var(--cs,1)) translateX(-25%);filter:drop-shadow(0 18px 22px rgba(0,0,0,.55))}
+#book.open{transform:scale(1) translateX(0)}
+.leaf{position:absolute;left:50%;top:0;width:50%;height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.55,.1,.3,1)}
+.leaf.f{transform:rotateY(-180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:var(--cream)}
+.face.back{transform:rotateY(180deg)}
+.face img{position:absolute;width:100%;height:auto;left:0;top:0;user-select:none;-webkit-user-drag:none}
+.face::before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.28),transparent 9%)}
+.face.back::before{background:linear-gradient(270deg,rgba(0,0,0,.28),transparent 9%)}
+.sh{position:absolute;inset:0;z-index:4;pointer-events:none;opacity:0;background:linear-gradient(90deg,rgba(0,0,0,.5),rgba(255,255,255,.12) 60%,rgba(0,0,0,.35))}
+.leaf.t .sh{animation:sh 1s ease-in-out}
+@keyframes sh{50%{opacity:.7}}
+.hs{position:absolute;z-index:5;cursor:pointer;border-radius:3px}
+.hs:hover{outline:2px dashed rgba(255,248,237,.8)}
+#intro{position:fixed;left:0;right:0;bottom:0;top:0;z-index:7;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:60px 16px 30px;text-align:center;pointer-events:none;transition:opacity .6s}
+#intro.off{opacity:0;visibility:hidden}
+#intro h1{font-size:clamp(22px,5.5vw,36px);color:var(--blush);text-shadow:0 2px 8px #000}
+.bt{background:var(--bg);color:var(--cream);border:2px solid var(--rose);border-radius:30px;padding:10px 26px;font-size:24px;box-shadow:0 4px 12px rgba(0,0,0,.4);pointer-events:auto;margin:6px}
+.bt:active{transform:scale(.96)}
+#ui{position:fixed;bottom:0;left:0;right:0;height:88px;display:flex;align-items:center;justify-content:center;gap:14px;z-index:6;padding-bottom:env(safe-area-inset-bottom)}
+#ui.off{display:none}
+.ar{width:48px;height:48px;border-radius:50%;border:2px solid var(--rose);background:rgba(128,0,32,.7);color:var(--cream);font-size:26px}
+#pg{width:min(50vw,260px);text-align:center;color:var(--blush)}
+#pb{height:4px;background:rgba(255,255,255,.15);border-radius:3px;margin-top:4px;overflow:hidden}
+#pb i{display:block;height:100%;width:0;background:var(--rose);transition:width .8s}
+#last{position:fixed;left:0;right:0;bottom:92px;text-align:center;z-index:6;display:none}
+#mc{position:fixed;top:8px;right:8px;z-index:8;display:flex;gap:6px}
+#mc button{width:38px;height:38px;border-radius:50%;border:1px solid var(--rose);background:rgba(128,0,32,.7);color:var(--cream);font-size:17px}
+#sig{position:fixed;left:10px;bottom:6px;font-size:15px;color:var(--rose);opacity:.8;z-index:6}
+#ov{position:fixed;inset:0;z-index:20;background:rgba(25,5,9,.72);display:none;align-items:center;justify-content:center}
+#ov.on{display:flex}
+#ov.game .card{pointer-events:none}
+.card{position:relative;width:min(92vw,430px);max-height:88dvh;overflow:auto;background:linear-gradient(#FFF8ED,#f6e8d3);color:var(--brown);padding:24px 20px 16px;border-radius:3px;text-align:center;font-size:23px;box-shadow:0 10px 40px #000;transform:rotate(-.5deg)}
+.card::before{content:"";position:absolute;top:-10px;left:50%;width:90px;height:22px;margin-left:-45px;background:rgba(192,128,129,.75);transform:rotate(-3deg)}
+.card h3{color:var(--bg);font-size:25px}.card small{color:var(--rose)}
+.card img{max-width:100%}
+.opt{display:block;width:100%;margin:8px 0;padding:8px;background:var(--blush);border:1.5px solid var(--rose);border-radius:8px;color:var(--brown);font-size:22px}
+.opt.ok{background:#cfe6c8}.opt.no{background:#f5c1c1}
+.yn{display:flex;gap:14px;justify-content:center;min-height:60px;margin-top:10px}
+.sk{background:none;border:none;color:var(--rose);text-decoration:underline;font-size:18px}
+.fh{position:absolute;top:-60px;font-size:38px;z-index:30;cursor:pointer;animation:fh linear forwards;user-select:none}
+@keyframes fh{to{transform:translateY(115vh) rotate(20deg)}}
+.rh{position:absolute;font-size:46px;z-index:30;cursor:pointer;transition:left .35s,top .35s;user-select:none;transform:translate(-50%,-50%)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.cd{aspect-ratio:1;border-radius:8px;border:2px solid var(--rose);background:var(--bg);color:var(--bg);font-size:30px;padding:0}
+.cd.on{background:var(--cream);color:inherit}.cd.mt{background:var(--blush)}
+.env{position:relative;width:200px;height:120px;margin:10px auto;background:#e6cfa8;border:2px solid var(--brown);border-radius:4px}
+.env::before{content:"";position:absolute;left:0;top:0;border-left:100px solid transparent;border-right:100px solid transparent;border-top:70px solid #d4b88a;transform-origin:top;transition:transform .8s}
+.env.op::before{transform:rotateX(180deg)}
+.seal{position:absolute;left:50%;top:48px;width:44px;height:44px;margin-left:-22px;border-radius:50%;background:radial-gradient(#a0102f,#5c0016);color:#f3c9cf;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;transition:.6s;box-shadow:0 2px 5px #0006}
+.env.op .seal{opacity:0;transform:scale(1.6)}
+input{font:inherit;font-size:22px;padding:6px 10px;border:2px solid var(--rose);border-radius:8px;width:70%;background:#fffdf8;color:var(--brown)}
+.m{min-height:1.3em;color:var(--bg)}
+#pop{position:fixed;left:50%;bottom:110px;transform:translateX(-50%) rotate(-1deg);background:var(--cream);color:var(--brown);padding:10px 18px;border-radius:4px;box-shadow:0 6px 20px #000a;z-index:30;max-width:86vw;text-align:center;display:none;font-size:22px}
+.pt{position:fixed;top:-5vh;width:12px;height:16px;background:var(--rose);border-radius:80% 0 80% 0;opacity:.5;animation:pt linear infinite;pointer-events:none;z-index:1}
+@keyframes pt{to{transform:translate(70px,110vh) rotate(540deg)}}
+.fl{position:fixed;bottom:-30px;font-size:18px;opacity:.5;animation:fl linear infinite;cursor:pointer;z-index:5}
+@keyframes fl{to{transform:translateY(-115vh) translateX(20px)}}
+</style></head><body>
+<div id="top"><span id="hint">A little something for you ❤️</span></div>
+<div id="mc"><button id="mu" title="Play / pause music">♪</button><button id="mt" title="Mute">🔊</button></div>
+<div id="stage"><div id="book"></div></div>
+<div id="intro"><h1>A little something for you, Mauli ❤️</h1><button class="bt" id="openbtn">Open your diary</button></div>
+<div id="last"><button class="bt" id="lastbtn">One last thing...</button></div>
+<div id="ui" class="off"><button class="ar" id="pv">‹</button><div id="pg"><span id="pl"></span><div id="pb"><i></i></div></div><button class="ar" id="nx">›</button></div>
+<div id="sig">Made with love ❤️</div>
+<div id="ov"><div class="card" id="cd"></div></div><div id="pop"></div>
+<audio id="au" loop preload="none" src="audio/music.mp3"></audio>
+<script>
+/* ============ ✏️ EDIT YOUR PERSONAL CONTENT HERE ============ */
+const C={
+ // Quiz: q = question, o = options, a = index of correct option (0 = first)
+ quiz:[
+  {q:"Who gets angry first?",o:["Me","Mauli","Both of us 😅"],a:0},
+  {q:"Who falls asleep during calls?",o:["Me","Mauli","Both of us"],a:1},
+  {q:"What is one of our favourite memories?",o:["✏️ Memory A (edit me)","✏️ Memory B (edit me)","✏️ Memory C (edit me)"],a:0},
+  {q:"Who is more stubborn?",o:["Me","Mauli","Honestly, both"],a:2},
+  {q:"Which moment would we love to relive?",o:["✏️ Moment A (edit me)","✏️ Moment B (edit me)","✏️ Moment C (edit me)"],a:1}],
+ quizEnd:"You know us well ❤️ ✏️ (edit this message)",
+ compl:["Your smile is my favourite view 😊","You make ordinary days special","Beautiful, inside and out","Your laugh is my favourite sound","You're my favourite person","Sundar Mauli, truly ✨","You make me want to be better","Your eyes could win any argument","You're the best part of my day","Everything is softer with you","You're stronger than you know","Your voice is home to me","You look lovely when you blush 🌹","Thank you for being you","I'm so lucky it's you ❤️"],
+ heartsMsg:"Surprise! ✏️ Write your hidden surprise message here ❤️",
+ matchMsg:"Perfect match, just like us ❤️ ✏️ (edit this message)",
+ riddle:"✏️ Riddle: What can you keep only after giving it to someone?", answer:"promise", hint:"Hint: ✏️ write a hint here",
+ secret:"✏️ Your secret message to Mauli goes here. Write it from the heart. ❤️",
+ runMsg:"Caught you! (the heart, and my heart too) ❤️ ✏️ Edit this surprise.",
+ final:"Some stories are written in books. Ours is something I want to keep writing, one page at a time. ❤️",
+ // Tappable photo areas: page: [x%, y%, w%, h%, caption] (percent of the original image)
+ hot:{2:[[24,20,26,23,"✏️ Caption 1"],[24,43,26,20,"✏️ Caption 2"],[24,65,26,22,"✏️ Caption 3"],[47,12,26,23,"✏️ Caption 4"],[47,35,26,21,"✏️ Caption 5"],[47,56,26,22,"✏️ Caption 6"]],
+  4:[[0,0,50,50,"✏️ Caption 1"],[50,0,50,50,"✏️ Caption 2"],[0,50,50,50,"✏️ Caption 3"],[50,50,50,50,"✏️ Caption 4"]],
+  6:[[6,1,26,35,"✏️ Caption 1"],[36,1,26,35,"✏️ Caption 2"],[6,38,26,35,"✏️ Caption 3"],[36,38,26,35,"✏️ Caption 4"],[6,75,26,25,"✏️ Caption 5"],[52,60,20,40,"Sundar Mauli 💋"]],
+  8:[[62,10,26,44,"✏️ Caption 1"],[18,36,32,22,"✏️ Caption 2"],[35,53,20,20,"✏️ Caption 3"],[21,71,20,20,"✏️ Caption 4"],[66,71,24,24,"✏️ Caption 5"]]}
+};
+/* ============================================================ */
+const $=s=>document.querySelector(s),N=5,AR=586/664;
+const crop={2:.065,4:.06,6:.07,8:.10}; // hides the left page's own spiral so one spiral sits in the middle
+let s=0,busy=false,moved=false;const done={},leaves=[],book=$('#book');
+const labels=['Cover','Pages 2 · 3','Pages 4 · 5','Pages 6 · 7','Pages 8 · 9'];
+function hs(p,h,left){let[x,y,w,hh]=h,c=crop[p]||0,z=1/(1-c);
+ if(left){x=(x-c*100)*z;y=y*z-(z-1)*30;w*=z;hh*=z}
+ return `<b class="hs" style="left:${x}%;top:${y}%;width:${w}%;height:${hh}%" data-t="${h[4]}"></b>`}
+function face(p,k){const left=k=='back',c=crop[p]||0,z=1/(1-c);
+ const st=left?`style="width:${z*100}%;left:-${c*z*100}%;top:-${(z-1)*30}%"`:'';
+ return `<div class="face ${k}" data-p="${p}"><img src="images/page-${p}.png" ${st} alt="Page ${p}" draggable="false" onerror="this.removeAttribute('src');this.alt='Put images/page-${p}.png here'">${(C.hot[p]||[]).map(h=>hs(p,h,left)).join('')}<i class="sh"></i></div>`}
+for(let i=0;i<N;i++){const L=document.createElement('div');L.className='leaf';L.style.zIndex=N-i;
+ L.innerHTML=face(2*i+1,'front')+(i<4?face(2*i+2,'back'):'<div class="face back"></div>');book.appendChild(L);leaves.push(L)}
+function size(){const st=$('#stage'),w=st.clientWidth,h=st.clientHeight,pw=Math.min(w/2*.98,h*AR*.98,520);
+ book.style.width=2*pw+'px';book.style.height=pw/AR+'px';
+ book.style.setProperty('--cs',Math.min(w*.85/pw,h*.95/(pw/AR),2.2))}
+addEventListener('resize',size);size();
+function flip(i,fw){const L=leaves[i];L.style.zIndex=99;L.classList.toggle('f',fw);L.classList.add('t');
+ setTimeout(()=>L.style.zIndex=fw?i+1:N-i,500);setTimeout(()=>L.classList.remove('t'),1000)}
+function upd(){book.classList.toggle('open',s>0);$('#pl').textContent=labels[s];$('#pb i').style.width=s/4*100+'%';
+ $('#ui').classList.toggle('off',s==0);$('#last').style.display=s==4?'block':'none';
+ $('#hint').textContent=s?'Tap a page to read closer · tap photos ✨':'A little something for you ❤️'}
+const gates={1:[quiz],2:[yesno,hearts],3:[match,letter]};
+async function next(){if(busy||s<1||s>=4)return;busy=true;
+ if(!done[s]){for(const g of gates[s])await g();done[s]=1}
+ flip(s,true);s++;upd();setTimeout(()=>busy=false,1000)}
+function prev(){if(busy||s<=1)return;busy=true;s--;flip(s,false);upd();setTimeout(()=>busy=false,1000)}
+$('#openbtn').onclick=()=>{if(busy)return;busy=true;$('#intro').classList.add('off');flip(0,true);s=1;upd();setTimeout(()=>busy=false,1100)};
+$('#nx').onclick=next;$('#pv').onclick=prev;
+addEventListener('keydown',e=>{if($('#ov').classList.contains('on'))return;if(e.key=='ArrowRight')next();if(e.key=='ArrowLeft')prev()});
+let x0=0;const stg=$('#stage');
+stg.addEventListener('pointerdown',e=>{x0=e.clientX});
+stg.addEventListener('pointerup',e=>{const d=e.clientX-x0;if(Math.abs(d)>45){moved=true;setTimeout(()=>moved=false,80);d<0?next():prev()}});
+book.addEventListener('click',e=>{if(moved||!s)return;const t=e.target;
+ if(t.classList.contains('hs'))return pop(t.dataset.t);
+ const f=t.closest('.face');if(f&&f.dataset.p)zoom(f.dataset.p)});
+/* ---------- helpers ---------- */
+let pt;function pop(t){const p=$('#pop');p.textContent=t;p.style.display='block';clearTimeout(pt);pt=setTimeout(()=>p.style.display='none',3000)}
+$('#pop').onclick=()=>$('#pop').style.display='none';
+function show(h){const o=$('#ov');o.classList.remove('game');$('#cd').innerHTML=h;o.classList.add('on')}
+function hide(){$('#ov').classList.remove('on','game');document.querySelectorAll('.fh,.rh').forEach(e=>e.remove())}
+const note=(h,b='Continue ❤️')=>new Promise(r=>{show(h+`<button class="bt" id="ok">${b}</button>`);$('#ok').onclick=()=>{hide();r()}});
+function type(el,t,cb){let i=0;const x=setInterval(()=>{el.textContent=t.slice(0,++i);if(i>=t.length){clearInterval(x);cb&&cb()}},35)}
+function zoom(p){show(`<img src="images/page-${p}.png" alt=""><br><button class="bt" id="ok">Close</button>`);$('#ok').onclick=hide}
+const rnd=(a,b)=>a+Math.random()*(b-a);
+/* ---------- Game 1: quiz (required) ---------- */
+function quiz(){return new Promise(r=>{let i=0,w=0;const q=()=>{const Q=C.quiz[i];
+ show(`<small>How well do you know us? ${i+1}/${C.quiz.length}</small><h3>${Q.q}</h3>${Q.o.map((o,j)=>`<button class="opt" data-j="${j}">${o}</button>`).join('')}<p class="m" id="m"></p>`);
+ document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(+b.dataset.j==Q.a){b.classList.add('ok');$('#m').textContent='Yes! ❤️';setTimeout(()=>{i++;w=0;i<C.quiz.length?q():note(`<h3>All done!</h3><p>${C.quizEnd}</p>`).then(r)},700)}
+  else{w++;b.classList.add('no');$('#m').textContent='Hmm, not quite 😏';if(w>=2)document.querySelectorAll('.opt')[Q.a].classList.add('ok')}})};q()})}
+/* ---------- Yes / No ---------- */
+function yesno(){return new Promise(r=>{const msgs=['Nice try 😂','Mauli, you can\'t escape!','Just one more page 🥺','You know you want to see it!'];let n=0;
+ show(`<h3>Are you sure you want to continue? 👀</h3><p class="m" id="m"></p><div class="yn"><button class="bt" id="y">YES ❤️</button><button class="bt" id="n">NO 🙄</button></div>`);
+ const N_=$('#n');$('#y').onclick=()=>{hide();r()};
+ const run=e=>{if(n>=6)return;e.preventDefault();n++;$('#m').textContent=msgs[n%4];
+  if(n>=6){N_.textContent='Okay fine ❤️';N_.style.position='';return}
+  N_.style.position='fixed';N_.style.left=rnd(10,innerWidth-130)+'px';N_.style.top=rnd(80,innerHeight-100)+'px'};
+ N_.onpointerenter=run;N_.onpointerdown=run;N_.onclick=()=>{if(n>=6){hide();r()}}})}
+/* ---------- Game 2: catch hearts (required) ---------- */
+function hearts(){return new Promise(r=>{let n=0;show(`<h3>Catch my love ❤️</h3><p>Catch 15 hearts: <b id="c">0</b>/15</p><p class="m" id="m">&nbsp;</p>`);
+ const o=$('#ov');o.classList.add('game');
+ const t=setInterval(()=>{const h=document.createElement('b');h.className='fh';h.textContent='❤️';h.style.left=rnd(2,88)+'%';h.style.animationDuration=rnd(4,6.5)+'s';
+  h.onpointerdown=()=>{h.remove();n++;$('#c').textContent=n;$('#m').textContent=C.compl[n-1];
+   if(n>=15){clearInterval(t);hide();note(`<h3>You did it! 💌</h3><p>${C.heartsMsg}</p>`).then(r)}};
+  h.onanimationend=()=>h.remove();o.appendChild(h)},650)})}
+/* ---------- Game 3: memory match (required) ---------- */
+function match(){return new Promise(r=>{const sy=['🌹','💌','💋','🐥','🧿','❤️'],d=[...sy,...sy].sort(()=>Math.random()-.5);let a=null,lock=false,m=0;
+ show(`<h3>Our memory match</h3><div class="grid">${d.map(x=>`<button class="cd" data-s="${x}">${x}</button>`).join('')}</div><p class="m" id="m">Find all 6 pairs</p>`);
+ document.querySelectorAll('.cd').forEach(b=>b.onclick=()=>{if(lock||b.classList.contains('on'))return;b.classList.add('on');
+  if(!a){a=b;return}
+  if(a.dataset.s==b.dataset.s){a.classList.add('mt');b.classList.add('mt');a=null;m++;$('#m').textContent=m+'/6 pairs';if(m==6)setTimeout(()=>note(`<h3>All matched!</h3><p>${C.matchMsg}</p>`).then(r),600)}
+  else{lock=true;setTimeout(()=>{a.classList.remove('on');b.classList.remove('on');a=null;lock=false},700)}})})}
+/* ---------- Game 4: secret letter (skippable after 2 tries) ---------- */
+function letter(){return new Promise(r=>{let w=0;show(`<h3>A sealed letter 💌</h3><div class="env" id="env"><div class="seal">M</div></div><p>${C.riddle}</p><input id="in" placeholder="Your answer" autocomplete="off"><br><button class="bt" id="go">Unlock</button><p class="m" id="m"></p><div id="sec" style="font-size:24px"></div>`);
+ const open=()=>{$('#env').classList.add('op');$('#go').remove();$('#in').remove();const sc=$('#sec');type(sc,C.secret,()=>{const b=document.createElement('button');b.className='bt';b.textContent='Continue ❤️';b.onclick=()=>{hide();r()};sc.after(b)})};
+ $('#go').onclick=()=>{if($('#in').value.trim().toLowerCase()==C.answer.toLowerCase())open();else{w++;$('#m').textContent=w>1?C.hint:'Not quite, try again 😉';
+  if(w==2){const b=document.createElement('button');b.className='sk';b.textContent='Open it anyway';b.onclick=open;$('#go').after(b)}}}})}
+/* ---------- Game 5: runaway heart (optional) ---------- */
+function runaway(){return new Promise(r=>{let n=0;const need=6;show(`<h3>Catch the runaway heart 🏃‍♀️</h3><p>Tap it ${need} times! <b id="c">0</b>/${need}</p><button class="sk" id="sk">Skip</button>`);
+ const o=$('#ov'),h=document.createElement('b');h.className='rh';h.textContent='💗';o.appendChild(h);
+ const mv=()=>{h.style.left=rnd(10,88)+'%';h.style.top=rnd(15,85)+'%'};mv();const t=setInterval(mv,1100);
+ $('#sk').onclick=()=>{clearInterval(t);hide();r()};
+ h.onpointerdown=e=>{e.preventDefault();n++;$('#c').textContent=n;if(n>=need){clearInterval(t);hide();note(`<h3>Caught! 💗</h3><p>${C.runMsg}</p>`).then(r)}else mv()}})}
+/* ---------- Final ---------- */
+$('#lastbtn').onclick=async()=>{if(busy)return;busy=true;await runaway();
+ show(`<h3>One last thing...</h3><p id="fm" style="min-height:5em"></p>`);
+ type($('#fm'),C.final,()=>{const b=document.createElement('button');b.className='bt';b.textContent='Close the diary ❤️';b.onclick=closeBook;$('#fm').after(b)})};
+function closeBook(){hide();$('#last').style.display='none';$('#ui').classList.add('off');
+ for(let k=3;k>=0;k--)setTimeout(()=>flip(k,false),(3-k)*380);
+ s=0;book.classList.remove('open');$('#hint').textContent='Until next time ❤️';
+ setTimeout(()=>{$('#openbtn').textContent='Open your diary again';$('#intro').classList.remove('off');busy=false},2400)}
+/* ---------- Music (never autoplays) ---------- */
+const au=$('#au');let ok=true;au.onerror=()=>ok=false;
+$('#mu').onclick=()=>{if(au.paused){au.play().then(()=>$('#mu').textContent='❚❚').catch(()=>pop('Add audio/music.mp3 to play music 🎵'))}else{au.pause();$('#mu').textContent='♪'}};
+$('#mt').onclick=()=>{au.muted=!au.muted;$('#mt').textContent=au.muted?'🔇':'🔊'};
+/* ---------- Petals & floating hearts ---------- */
+for(let i=0;i<14;i++){const p=document.createElement('i');p.className='pt';p.style.left=rnd(0,100)+'vw';p.style.animationDuration=rnd(9,18)+'s';p.style.animationDelay=-rnd(0,15)+'s';document.body.appendChild(p)}
+for(let i=0;i<5;i++){const h=document.createElement('b');h.className='fl';h.textContent='❤';h.style.color='#C08081';h.style.left=rnd(3,95)+'vw';h.style.animationDuration=rnd(14,24)+'s';h.style.animationDelay=-rnd(0,20)+'s';
+ h.onclick=()=>pop(C.compl[Math.floor(rnd(0,C.compl.length))]);document.body.appendChild(h)}
+upd();
+</script></body></html>
